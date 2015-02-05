@@ -23,7 +23,7 @@ gc = gspread.login("nmaadara@ciscofederal.net", "N!4a1b2i9l12")
 sheet = gc.open("DNS").sheet1
 
 # Create the zone file and start writing to it
-zone = open('zone.txt', 'w')
+zone = open('old_zone.txt', 'w')
 
 # Start of zone file
 zone.write("$ORIGIN " + sheet.row_values(1)[0] + "\n")
