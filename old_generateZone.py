@@ -2,22 +2,22 @@ import gspread
 import getpass
 import socket
 
-##while True:
-##    # Ask user to login
-##    username = raw_input("Enter your Drive email address: ")
-##    password = getpass.getpass("Enter Password: ")
-##
-##    try:
-##        # Authenticate user
-##        gc = gspread.login(username, password)
-##        break;
-##    except gspread.exceptions.AuthenticationError:
-##        print ">> Login failed! Try again...\n"
+while True:
+    # Ask user to login
+    username = raw_input("Enter your Drive email address: ")
+    password = getpass.getpass("Enter Password: ")
+
+    try:
+        # Authenticate user
+        gc = gspread.login(username, password)
+        break;
+    except gspread.exceptions.AuthenticationError:
+        print ">> Login failed! Try again...\n"
 
 # OR replace everything above with below (uncommented)
 # using your email address and password explicitely
 
-gc = gspread.login("nmaadara@ciscofederal.net", "N!4a1b2i9l12")
+# gc = gspread.login(email_address, password)
 
 # Open the required spreadsheet
 sheet = gc.open("DNS").sheet1
