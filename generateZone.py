@@ -22,27 +22,31 @@ while True:
 # Open the required spreadsheet
 sheet = gc.open("focil.ciscoscience.net").sheet1
 
-# Scan for SOA to get default TTL
-defaultTtl = ''
-for x in range(2, len(sheet.get_all_values())+1):
-    # Fetch row
-    row = sheet.row_values(x)
-    print "Checking",row[0]
-
-    # Check if record type is SOA
-    if(row[3] == "SOA"):
-        defaultTtl = row[1]
-        break
+# Get default TTL from SOA
+defaultTtl = sheet.acell('B2').value
 
 # Create the zone file and start writing to it
 zone = open('zone.txt', 'w')
 
-for y in range(2, len(sheet.get_all_values())+1):
+for x in range(2, len(sheet.get_all_values())+1):
     # Fetch row
-    row = sheet.row_values(y)
+    row = sheet.row_values(x)
 
     # Check RR TTL
     rrTtl = defaultTtl if row[1] is None else row[1]
+
+    # Data validation
+    if(row[3] == "A"):
+        try:
+            socket.inet_aton(row[4])
+        except socket.error:
+            sheet.update_cell(x, 7, 'Wrong IPv4 format!')
+
+    elif(row[3] == "AAAA"):
+        try:
+            socket.inet_pton(socket.AF_INET6, row[4])
+        except socket.error:
+            sheet.update_cell(x, 7, 'Wrong IPv6 format!')
 
     print "Gonna write",row[0]
     # Write RR to zone file
