@@ -39,16 +39,20 @@ for x in range(2, len(sheet.get_all_values())+1):
     if(row[3] == "A"):
         try:
             socket.inet_aton(row[4])
+            sheet.update_cell(x, 7, 'Success')
         except socket.error:
-            sheet.update_cell(x, 7, 'Wrong IPv4 format!')
+            sheet.update_cell(x, 7, 'ERROR: Wrong IPv4 format')
+            continue
 
     elif(row[3] == "AAAA"):
         try:
             socket.inet_pton(socket.AF_INET6, row[4])
+            sheet.update_cell(x, 7, 'Success')
         except socket.error:
-            sheet.update_cell(x, 7, 'Wrong IPv6 format!')
+            sheet.update_cell(x, 7, 'ERROR: Wrong IPv6 format!')
+            continue
 
-    print "Gonna write",row[0]
+    print "Writing",row[0]
     # Write RR to zone file
     zone.write(row[0] + "\t" + rrTtl + "\t" + row[2] + "\t" + row[3] + "\t" + row[4] + "\n")
 
